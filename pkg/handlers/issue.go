@@ -8,43 +8,27 @@ import (
 	"github.com/tjololo/mope/pkg/structs"
 	"github.com/tjololo/mope/pkg/utils"
 	"go.uber.org/zap"
+	"golang.org/x/exp/slices"
 	"gopkg.in/yaml.v3"
 	"net/http"
 	"os"
+	"regexp"
 	"strconv"
 )
 
-func HandleIssueCommentCreated(deliveryID string, eventName string, event *github.IssueCommentEvent) error {
+func HandleIssueOpenEvent(deliveryID string, eventName string, event *github.IssuesEvent) error {
 	utils.Logger.Info("Issue commented", zap.Stringp("user", event.Sender.Login))
-	appId, err := strconv.Atoi(os.Getenv("GITHUB_APP_ID"))
+	client, client2, err := getGithubClients(*event.Installation.ID)
 	if err != nil {
-		utils.Logger.Error("coudl not parse $GITHUB_APP_ID envvar to int", zap.Error(err))
-	}
-	privateKeyFile := os.Getenv("GITHUB_PRIVATE_KEY_FILE")
-	itr, err := ghinstallation.NewKeyFromFile(http.DefaultTransport, int64(appId), *event.Installation.ID, privateKeyFile)
-
-	if err != nil {
+		utils.Logger.Error("Failed to get github clients", zap.Error(err))
 		return err
 	}
-
-	// Use installation transport with client.
-	httpClient := &http.Client{Transport: itr}
-	client := github.NewClient(httpClient)
-	client2 := githubv4.NewClient(httpClient)
-
 	ctx := context.Background()
-
-	f, _, _, err := client.Repositories.GetContents(ctx, *event.Repo.Owner.Login, *event.Repo.Name, ".github/mope.yaml", nil)
-	var config structs.Config
-	s, err := f.GetContent()
+	config, err := readConfigFromRepo(ctx, client, *event.Repo.Owner.Login, *event.Repo.Name, *event.Repo.DefaultBranch)
 	if err != nil {
-		utils.Logger.Error("failed to get content", zap.Error(err))
+		utils.Logger.Error("Failed to parse config", zap.Error(err))
+		return err
 	}
-	err = yaml.Unmarshal([]byte(s), &config)
-	if err != nil {
-		utils.Logger.Error("failed to read config", zap.Error(err), zap.Stringp("content", f.Content))
-	}
-
 	var query struct {
 		Organization struct {
 			ProjectV2 struct {
@@ -78,11 +62,73 @@ func HandleIssueCommentCreated(deliveryID string, eventName string, event *githu
 		utils.Logger.Error("update failed", zap.Error(err))
 		return err
 	}
+	return nil
+}
 
-	_, _, err = client.Issues.AddLabelsToIssue(ctx, *event.Repo.Owner.Login, *event.Repo.Name, *event.Issue.Number, []string{"test"})
-
+func HandleIssueCommentCreated(deliveryID string, eventName string, event *github.IssueCommentEvent) error {
+	utils.Logger.Info("Issue commented", zap.Stringp("user", event.Sender.Login))
+	commentBody := *event.Comment.Body
+	regx := regexp.MustCompile(`^/label (.*?)(\s.*?)?$`)
+	if !regx.MatchString(commentBody) {
+		return nil
+	}
+	labelString := regx.FindStringSubmatch(commentBody)[1]
+	client, _, err := getGithubClients(*event.Installation.ID)
 	if err != nil {
+		utils.Logger.Error("Failed to get github clients", zap.Error(err))
 		return err
 	}
+
+	ctx := context.Background()
+
+	config, err := readConfigFromRepo(ctx, client, *event.Repo.Owner.Login, *event.Repo.Name, *event.Repo.DefaultBranch)
+	if err != nil {
+		utils.Logger.Error("Failed to parse config", zap.Error(err))
+		return err
+	}
+
+	val, found := config.LabelOwners[labelString]
+	if found {
+		slices.Contains(val.Logins, *event.Sender.Login)
+		_, _, err = client.Issues.AddLabelsToIssue(ctx, *event.Repo.Owner.Login, *event.Repo.Name, *event.Issue.Number, []string{labelString})
+		if err != nil {
+			return err
+		}
+	}
 	return nil
+}
+
+func getGithubClients(installationId int64) (*github.Client, *githubv4.Client, error) {
+	appId, err := strconv.Atoi(os.Getenv("GITHUB_APP_ID"))
+	if err != nil {
+		utils.Logger.Error("coudl not parse $GITHUB_APP_ID envvar to int", zap.Error(err))
+	}
+	privateKeyFile := os.Getenv("GITHUB_PRIVATE_KEY_FILE")
+	itr, err := ghinstallation.NewKeyFromFile(http.DefaultTransport, int64(appId), installationId, privateKeyFile)
+
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// Use installation transport with client.
+	httpClient := &http.Client{Transport: itr}
+	client := github.NewClient(httpClient)
+	clientv4 := githubv4.NewClient(httpClient)
+	return client, clientv4, nil
+}
+
+func readConfigFromRepo(ctx context.Context, client *github.Client, owner, name, branch string) (*structs.Config, error) {
+	f, _, _, err := client.Repositories.GetContents(ctx, owner, name, ".github/mope.yaml", &github.RepositoryContentGetOptions{
+		Ref: branch,
+	})
+	if err != nil {
+		return nil, err
+	}
+	var config *structs.Config
+	s, err := f.GetContent()
+	if err != nil {
+		return nil, err
+	}
+	err = yaml.Unmarshal([]byte(s), &config)
+	return config, err
 }

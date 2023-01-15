@@ -18,6 +18,11 @@ func main() {
 	handle.OnIssueCommentCreated(
 		handlers.HandleIssueCommentCreated,
 	)
+
+	handle.OnIssuesEventOpened(
+		handlers.HandleIssueOpenEvent,
+	)
+
 	// add a http handleFunc
 	http.HandleFunc("/hook", func(w http.ResponseWriter, r *http.Request) {
 		r.Header.Add("Content-Type", "application/json")
