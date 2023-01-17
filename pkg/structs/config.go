@@ -1,8 +1,9 @@
 package structs
 
 type Config struct {
-	Project     Project           `yaml:"project"`
-	LabelOwners map[string]Owners `yaml:"labelOwners,omitempty"`
+	Project          Project            `yaml:"project"`
+	LabelOwners      map[string]*Owners `yaml:"labelOwners,omitempty"`
+	ForkPullRequests *ForkPullRequests  `yaml:"forkPullRequests,omitempty"`
 }
 
 type Project struct {
@@ -11,4 +12,9 @@ type Project struct {
 
 type Owners struct {
 	Logins []string `yaml:"logins"`
+}
+
+type ForkPullRequests struct {
+	Labels       []string `yaml:"labels"`
+	AddToProject bool     `yaml:"addToProject"`
 }

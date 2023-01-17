@@ -23,6 +23,9 @@ func main() {
 		handlers.HandleIssueOpenEvent,
 	)
 
+	handle.OnPullRequestEventOpened(
+		handlers.HandlePullReuqestOpened,
+	)
 	// add a http handleFunc
 	http.HandleFunc("/hook", func(w http.ResponseWriter, r *http.Request) {
 		r.Header.Add("Content-Type", "application/json")

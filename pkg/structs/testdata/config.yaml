@@ -4,3 +4,8 @@ labelOwners:
   "test":
     logins:
     - "tjololo"
+forkPullRequests:
+  labels:
+    - external
+    - needs-attention
+  addToProject: true
