@@ -23,6 +23,10 @@ func main() {
 		handlers.HandleIssueOpenEvent,
 	)
 
+	handle.OnIssuesEventReopened(
+		handlers.HandleIssueOpenEvent,
+	)
+
 	handle.OnPullRequestEventOpened(
 		handlers.HandlePullReuqestOpened,
 	)
