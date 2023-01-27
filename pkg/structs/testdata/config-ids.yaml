@@ -1,11 +1,11 @@
 project:
-  id: 1
+  ids:
+  - 1
+  - 2
 labelOwners:
   "test":
     logins:
     - "tjololo"
-    teams:
-    - "test"
 forkPullRequests:
   labels:
     - external

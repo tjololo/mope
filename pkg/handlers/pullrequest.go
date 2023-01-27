@@ -34,12 +34,12 @@ func HandlePullReuqestOpened(deliveryID string, eventName string, event *github.
 		}
 	}
 	if config.ForkPullRequests.AddToProject {
-		projectID, err := client.GetProjectID(ctx, *event.Repo.Owner.Login, config.Project.ID)
+		projectIDs, err := client.GetProjectIDs(ctx, *event.Repo.Owner.Login, config.Project.GetIDs())
 		if err != nil {
-			utils.Logger.Error("Failed to fetch projectID", zap.Error(err))
+			utils.Logger.Error("Failed to fetch projectIDs", zap.Error(err))
 			return err
 		}
-		return client.AddItemToProject(ctx, projectID, *event.PullRequest.NodeID)
+		return client.AddItemToProjects(ctx, projectIDs, *event.PullRequest.NodeID)
 	}
 	return nil
 }

@@ -23,14 +23,14 @@ func HandleIssueOpenEvent(deliveryID string, eventName string, event *github.Iss
 		utils.Logger.Error("Failed to parse config", zap.Error(err))
 		return err
 	}
-	projectID, err := client.GetProjectID(ctx, *event.Repo.Owner.Login, config.Project.ID)
+	projectIDs, err := client.GetProjectIDs(ctx, *event.Repo.Owner.Login, config.Project.GetIDs())
 	if err != nil {
 		utils.Logger.Error("fail", zap.Error(err))
 		return err
 	}
 
-	utils.Logger.Info("project found", zap.String("id", projectID))
-	return client.AddItemToProject(ctx, projectID, *event.Issue.NodeID)
+	utils.Logger.Info("project found", zap.Strings("id", projectIDs))
+	return client.AddItemToProjects(ctx, projectIDs, *event.Issue.NodeID)
 }
 
 func HandleIssueCommentCreated(deliveryID string, eventName string, event *github.IssueCommentEvent) error {
@@ -61,8 +61,19 @@ func HandleIssueCommentCreated(deliveryID string, eventName string, event *githu
 		}
 	}
 	val, found := config.LabelOwners[labelString]
-	if found && !exists && slices.Contains(val.Logins, *event.Sender.Login) {
-		return client.AddLabelToItem(ctx, *event.Repo.Owner.Login, *event.Repo.Name, *event.Issue.Number, labelString)
+	if found && !exists {
+		authorized := slices.Contains(val.Logins, *event.Sender.Login)
+		if !authorized {
+			members, err := client.GetMembersOfTeams(ctx, *event.Repo.Owner.Login, val.Teams)
+			if err != nil {
+				utils.Logger.Error("failed to get members of teams", zap.Error(err), zap.Strings("teams", val.Teams))
+				return err
+			}
+			authorized = slices.Contains(members, *event.Sender.Login)
+		}
+		if authorized {
+			return client.AddLabelToItem(ctx, *event.Repo.Owner.Login, *event.Repo.Name, *event.Issue.Number, labelString)
+		}
 	}
 	return nil
 }

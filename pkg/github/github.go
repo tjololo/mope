@@ -58,6 +58,18 @@ func (g *GithubClient) ReadConfigFromRepo(ctx context.Context, owner, name, bran
 	return config, err
 }
 
+func (g *GithubClient) GetProjectIDs(ctx context.Context, organization string, projectNumbers []int) (projectIDs []string, err error) {
+	var s string
+	for _, projectNumber := range projectNumbers {
+		s, err = g.GetProjectID(ctx, organization, projectNumber)
+		if err != nil {
+			return nil, err
+		}
+		projectIDs = append(projectIDs, s)
+	}
+	return
+}
+
 func (g *GithubClient) GetProjectID(ctx context.Context, organization string, projectNumber int) (string, error) {
 	var query ProjectQuery
 	vars := map[string]interface{}{
@@ -69,6 +81,47 @@ func (g *GithubClient) GetProjectID(ctx context.Context, organization string, pr
 		return "", err
 	}
 	return query.Organization.ProjectV2.Id, nil
+}
+
+func (g *GithubClient) GetMembersOfTeam(ctx context.Context, organization, teamslug string) ([]string, error) {
+	var query TeamMembersQuery
+	vars := map[string]interface{}{
+		"login": githubv4.String(organization),
+		"slug":  githubv4.String(teamslug),
+	}
+	err := g.clientV4.Query(ctx, &query, vars)
+	if err != nil {
+		return nil, err
+	}
+	var members []string
+	for _, node := range query.Organization.Team.Members.Nodes {
+		members = append(members, node.Login)
+	}
+	return members, nil
+}
+
+func (g *GithubClient) GetMembersOfTeams(ctx context.Context, organization string, teams []string) ([]string, error) {
+	var members []string
+	if teams == nil {
+		return members, nil
+	}
+	for _, team := range teams {
+		m, err := g.GetMembersOfTeam(ctx, organization, team)
+		if err != nil {
+			return nil, err
+		}
+		members = append(members, m...)
+	}
+	return members, nil
+}
+
+func (g *GithubClient) AddItemToProjects(ctx context.Context, projectIds []string, itemNodeID string) error {
+	for _, projectId := range projectIds {
+		if err := g.AddItemToProject(ctx, projectId, itemNodeID); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func (g *GithubClient) AddItemToProject(ctx context.Context, projectId, itemNodeID string) error {
