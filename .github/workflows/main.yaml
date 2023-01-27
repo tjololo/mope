@@ -43,7 +43,8 @@ jobs:
     name: Build latest and publish to pkg.dev
     runs-on: ubuntu-latest
     permissions:
-      packages: write
+      id-token: write
+      contents: read
     steps:
 
       - name: Set up Go 1.x
