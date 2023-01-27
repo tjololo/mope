@@ -76,7 +76,7 @@ jobs:
 
       - name: Publish docker image
         env:
-          KO_DOCKER_REPO: europe-north1-docker.pkg.dev/cloud-418/mope
+          KO_DOCKER_REPO: europe-north1-docker.pkg.dev/cloud-418
         run: |
           ./ko login europe-north1-docker.pkg.dev --username oauth2accesstoken --password ${{ steps.auth.outputs.access_token }}
           ./ko publish -B .
