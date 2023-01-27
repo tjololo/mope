@@ -14,12 +14,12 @@ jobs:
     steps:
 
       - name: Set up Go 1.x
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v3
         with:
           go-version: ^1.19
 
       - name: Check out code into the Go module directory
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Build
         run: go build -v .
@@ -33,7 +33,7 @@ jobs:
           chmod +x ./ko
       - name: Publish docker image
         env:
-          KO_DOCKER_REPO: ghcr.io/${{ github.repository_owner }}
+          KO_DOCKER_REPO: ghcr.io/${{ github.repository }}
         run: |
           ./ko login ghcr.io --username $GITHUB_REPOSITORY_OWNER --password ${{ secrets.GITHUB_TOKEN }}
           ./ko publish -B .
