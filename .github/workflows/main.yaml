@@ -40,7 +40,7 @@ jobs:
           ./ko login ghcr.io --username $GITHUB_REPOSITORY_OWNER --password ${{ secrets.GITHUB_TOKEN }}
           ./ko publish -B .
   publish_google:
-    name: Build latest and publish to ghcr
+    name: Build latest and publish to pkg.dev
     runs-on: ubuntu-latest
     permissions:
       packages: write
@@ -69,7 +69,7 @@ jobs:
         with:
           token_format: access_token
           workload_identity_provider: ${{ secrets.GCP_IDENTITY_PROVIDER }}
-          service_account: ${{ secrets.GCP_SERIVE_ACCOUNT }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
           access_token_lifetime: 300s
 
       - name: Publish docker image
