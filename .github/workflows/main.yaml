@@ -65,7 +65,8 @@ jobs:
         run: |
           curl -L https://github.com/google/ko/releases/download/v${{ env.ko_version }}/ko_${{ env.ko_version }}_Linux_x86_64.tar.gz | tar xzf - ko
           chmod +x ./ko
-      - name: auth
+      - name: Authenticate with Google Cloud
+        id: auth
         uses: google-github-actions/auth@v1
         with:
           token_format: access_token
