@@ -17,7 +17,7 @@ jobs:
         with:
           token_format: access_token
           workload_identity_provider: ${{ secrets.GCP_IDENTITY_PROVIDER }}
-          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+          service_account: ${{ secrets.GCP_RUN_SERVICE_ACCOUNT }}
           access_token_lifetime: 300s
       - id: deploy
         uses: google-github-actions/deploy-cloudrun@v1
