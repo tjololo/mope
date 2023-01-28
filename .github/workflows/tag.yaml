@@ -98,4 +98,5 @@ jobs:
         uses: google-github-actions/deploy-cloudrun@v1
         with:
           service: mope
+          region: europe-north1
           image: europe-north1-docker.pkg.dev/cloud-418/mope/mope:${{ steps.version.outputs.tag }}
