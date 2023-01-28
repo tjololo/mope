@@ -3,6 +3,13 @@ on:
   push:
     branches:
       - main
+    paths:
+      - main.go
+      - go.mod
+      - go.sum
+      - pkg/***
+      - .github/workflows/main.yaml
+
 
 env:
   ko_version: 0.12.0
