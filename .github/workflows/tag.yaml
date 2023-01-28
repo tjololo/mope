@@ -87,7 +87,7 @@ jobs:
           ./ko login europe-north1-docker.pkg.dev --username oauth2accesstoken --password ${{ steps.auth.outputs.access_token }}
           ./ko publish -B --tags ${{ steps.version.outputs.tag }} .
       - name: Authenticate with Google Cloud
-        id: auth
+        id: runauth
         uses: google-github-actions/auth@v1
         with:
           token_format: access_token
