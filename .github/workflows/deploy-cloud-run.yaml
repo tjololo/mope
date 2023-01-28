@@ -9,7 +9,7 @@ jobs:
     name: Build latest and publish to ghcr
     runs-on: ubuntu-latest
     permissions:
-      packages: write
+      id-token: write
     steps:
       - name: Authenticate with Google Cloud
         id: auth
