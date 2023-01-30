@@ -7,7 +7,7 @@ on:
       - main.go
       - go.mod
       - go.sum
-      - pkg/***
+      - pkg/**
       - .github/workflows/main.yaml
 
 
