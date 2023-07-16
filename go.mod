@@ -5,7 +5,8 @@ go 1.19
 require (
 	github.com/bradleyfalzon/ghinstallation/v2 v2.6.0
 	github.com/cbrgm/githubevents v1.7.0
-	github.com/google/go-github/v49 v49.1.0
+	github.com/google/go-github/v49 v49.0.0
+	github.com/google/go-github/v53 v53.2.0
 	github.com/shurcooL/githubv4 v0.0.0-20230704064427-599ae7bbf278
 	go.uber.org/zap v1.24.0
 	golang.org/x/exp v0.0.0-20230113213754-f9f960f08ad4
@@ -17,7 +18,6 @@ require (
 	github.com/cloudflare/circl v1.3.3 // indirect
 	github.com/golang-jwt/jwt/v4 v4.5.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
-	github.com/google/go-github/v53 v53.2.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/shurcooL/graphql v0.0.0-20220606043923-3cf50f8a0a29 // indirect
 	go.uber.org/atomic v1.7.0 // indirect
