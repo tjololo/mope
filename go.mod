@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/bradleyfalzon/ghinstallation/v2 v2.6.0
 	github.com/cbrgm/githubevents v1.7.0
-	github.com/google/go-github/v49 v49.0.0
+	github.com/google/go-github/v49 v49.1.0
 	github.com/shurcooL/githubv4 v0.0.0-20221229060216-a8d4a561cc93
 	go.uber.org/zap v1.24.0
 	golang.org/x/exp v0.0.0-20230113213754-f9f960f08ad4
