@@ -10,7 +10,7 @@ import (
 	"regexp"
 )
 
-func HandleIssueOpenEvent(deliveryID string, eventName string, event *github.IssuesEvent) error {
+func HandleIssueOpenEvent(_ string, _ string, event *github.IssuesEvent) error {
 	utils.Logger.Info("Issue commented", zap.Stringp("user", event.Sender.Login))
 	client, err := mopegithub.NewClient(*event.Installation.ID)
 	if err != nil {
@@ -33,7 +33,7 @@ func HandleIssueOpenEvent(deliveryID string, eventName string, event *github.Iss
 	return client.AddItemToProjects(ctx, projectIDs, *event.Issue.NodeID)
 }
 
-func HandleIssueCommentCreated(deliveryID string, eventName string, event *github.IssueCommentEvent) error {
+func HandleIssueCommentCreated(_ string, _ string, event *github.IssueCommentEvent) error {
 	utils.Logger.Info("Issue commented", zap.Stringp("user", event.Sender.Login))
 	commentBody := *event.Comment.Body
 	regx := regexp.MustCompile(`^/label (.*?)(\s.*?)?$`)

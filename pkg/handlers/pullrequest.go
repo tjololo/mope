@@ -8,7 +8,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func HandlePullReuqestOpened(deliveryID string, eventName string, event *github.PullRequestEvent) error {
+func HandlePullReuqestOpened(_ string, _ string, event *github.PullRequestEvent) error {
 	client, err := mopegithub.NewClient(*event.Installation.ID)
 	if err != nil {
 		utils.Logger.Error("Failed to get github clients", zap.Error(err))
