@@ -1,0 +1,37 @@
+name: Build latest from main branch
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+    paths:
+      - main.go
+      - go.mod
+      - go.sum
+      - pkg/**
+      - .github/workflows/main.yaml
+
+jobs:
+  publish_github:
+    name: Build latest and publish to ghcr
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    steps:
+
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v3
+        with:
+          go-version: ^1.19
+
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v3
+
+      - name: Build
+        run: go build -v .
+
+      - name: Test
+        run: go test -v ./...
