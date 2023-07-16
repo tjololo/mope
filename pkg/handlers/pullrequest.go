@@ -2,13 +2,13 @@ package handlers
 
 import (
 	"context"
-	"github.com/google/go-github/v49/github"
+	"github.com/google/go-github/v50/github"
 	mopegithub "github.com/tjololo/mope/pkg/github"
 	"github.com/tjololo/mope/pkg/utils"
 	"go.uber.org/zap"
 )
 
-func HandlePullReuqestOpened(deliveryID string, eventName string, event *github.PullRequestEvent) error {
+func HandlePullReuqestOpened(_ string, _ string, event *github.PullRequestEvent) error {
 	client, err := mopegithub.NewClient(*event.Installation.ID)
 	if err != nil {
 		utils.Logger.Error("Failed to get github clients", zap.Error(err))
