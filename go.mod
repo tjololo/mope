@@ -5,7 +5,8 @@ go 1.20
 require (
 	github.com/bradleyfalzon/ghinstallation/v2 v2.6.0
 	github.com/cbrgm/githubevents v1.8.0
-	github.com/google/go-github/v50 v50.2.0
+	github.com/google/go-github/v50 v50.0.0
+	github.com/google/go-github/v55 v55.0.0
 	github.com/shurcooL/githubv4 v0.0.0-20230704064427-599ae7bbf278
 	go.uber.org/zap v1.25.0
 	golang.org/x/exp v0.0.0-20230817173708-d852ddb80c63
@@ -21,7 +22,7 @@ require (
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/shurcooL/graphql v0.0.0-20220606043923-3cf50f8a0a29 // indirect
 	go.uber.org/multierr v1.10.0 // indirect
-	golang.org/x/crypto v0.7.0 // indirect
+	golang.org/x/crypto v0.12.0 // indirect
 	golang.org/x/net v0.10.0 // indirect
 	golang.org/x/oauth2 v0.8.0 // indirect
 	golang.org/x/sync v0.1.0 // indirect
