@@ -41,11 +41,9 @@ jobs:
           chmod +x ./ko
       - name: Build docker image
         id: image-build
-        env:
-          KO_DOCKER_REPO: ko.local/${{ github.repository_owner }}
         run: |
           ./ko login ghcr.io --username $GITHUB_REPOSITORY_OWNER --password ${{ secrets.GITHUB_TOKEN }}
-          IMAGE=$(./ko build -B .)
+          IMAGE=$(./ko build -B -L .)
           echo "IMAGE-LOCAL=$IMAGE" >> "$GITHUB_OUTPUT"
 
       - name: Run Trivy vulnerability scanner
