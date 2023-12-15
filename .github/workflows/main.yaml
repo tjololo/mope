@@ -12,7 +12,7 @@ on:
 
 
 env:
-  ko_version: 0.14.1
+  ko_version: 0.15.1
 
 jobs:
   publish_github:
@@ -45,7 +45,7 @@ jobs:
           KO_DOCKER_REPO: ghcr.io/${{ github.repository_owner }}
         run: |
           ./ko login ghcr.io --username $GITHUB_REPOSITORY_OWNER --password ${{ secrets.GITHUB_TOKEN }}
-          ./ko publish -B .
+          ./ko build -B .
   publish_google:
     name: Build latest and publish to pkg.dev
     runs-on: ubuntu-latest
@@ -86,4 +86,4 @@ jobs:
           KO_DOCKER_REPO: europe-north1-docker.pkg.dev/cloud-418/mope
         run: |
           ./ko login europe-north1-docker.pkg.dev --username oauth2accesstoken --password ${{ steps.auth.outputs.access_token }}
-          ./ko publish -B .
+          ./ko build -B .

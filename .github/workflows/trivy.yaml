@@ -17,6 +17,9 @@ on:
 permissions:
   contents: read
 
+env:
+  ko_version: 0.15.1
+
 jobs:
   build:
     permissions:
