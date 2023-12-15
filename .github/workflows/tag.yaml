@@ -41,11 +41,7 @@ jobs:
           KO_DOCKER_REPO: ghcr.io/${{ github.repository_owner }}
         run: |
           ./ko login ghcr.io --username $GITHUB_REPOSITORY_OWNER --password ${{ secrets.GITHUB_TOKEN }}
-          ./ko publish -B --tags ${{ steps.version.outputs.tag }} --sbom-dir .sbom .
-      - uses: anchore/sbom-action/publish-sbom@v0
-        with:
-          sbom-artifact-match: "\\.sbom\\/.*\\.spdx\\.json$"
-
+          ./ko build -B --tags ${{ steps.version.outputs.tag }} .
   publish_google:
     name: Build latest and publish to pkg.dev
     runs-on: ubuntu-latest
@@ -75,10 +71,6 @@ jobs:
         run: |
           curl -L https://github.com/google/ko/releases/download/v${{ env.ko_version }}/ko_${{ env.ko_version }}_Linux_x86_64.tar.gz | tar xzf - ko
           chmod +x ./ko
-
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
-
       - name: Authenticate with Google Cloud
         id: auth
         uses: google-github-actions/auth@v2
@@ -93,9 +85,7 @@ jobs:
           KO_DOCKER_REPO: europe-north1-docker.pkg.dev/cloud-418/mope
         run: |
           ./ko login europe-north1-docker.pkg.dev --username oauth2accesstoken --password ${{ steps.auth.outputs.access_token }}
-          FINAL_IMAGE=$(./ko publish -B --sbom-dir .sbom/ --tags ${{ steps.version.outputs.tag }} .)
-          gcloud artifacts sbom load --source .sbom/mope-linux-amd64.spdx.json --uri $FINAL_IMAGE
-
+          ./ko build -B --tags ${{ steps.version.outputs.tag }} .
       - name: Authenticate with Google Cloud
         id: runauth
         uses: google-github-actions/auth@v2
