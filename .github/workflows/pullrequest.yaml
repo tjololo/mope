@@ -12,7 +12,6 @@ on:
       - go.mod
       - go.sum
       - pkg/**
-      - .github/workflows/main.yaml
       - .github/workflows/pullrequest.yaml
 
 jobs:

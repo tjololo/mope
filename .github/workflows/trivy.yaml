@@ -51,8 +51,7 @@ jobs:
         uses: aquasecurity/trivy-action@91713af97dc80187565512baba96e4364e983601
         with:
           image-ref: ${{ steps.image-build.outputs.IMAGE_LOCAL }}
-          format: 'template'
-          template: '@/contrib/sarif.tpl'
+          format: 'sarif'
           output: 'trivy-results.sarif'
           severity: 'CRITICAL,HIGH'
 
