@@ -42,20 +42,18 @@ jobs:
       - name: Build docker image
         id: image-build
         run: |
-          ./ko login ghcr.io --username $GITHUB_REPOSITORY_OWNER --password ${{ secrets.GITHUB_TOKEN }}
-          IMAGE=$(./ko build -B -L .)
+          IMAGE = $(./ko build -B -L .)
           echo "$IMAGE"
-          echo "IMAGE-LOCAL=${IMAGE}" >> "$GITHUB_OUTPUT"
+          echo "$IMAGE"
+          echo IMAGE-LOCAL=$IMAGE >> "$GITHUB_OUTPUT"
 
       - name: Print image
         env:
           LOCAL_IMAGE: ${{ steps.image-build.outputs.IMAGE_LOCAL }}
         run: |
-          echo '${{ steps.image-build.outputs.IMAGE_LOCAL }}'
-          echo ${{ steps.image-build.outputs.IMAGE_LOCAL }}
           echo $LOCAL_IMAGE
-          echo '$LOCAL_IMAGE'
-          echo '${LOCAL_IMAGE}'
+          echo $LOCAL_IMAGE
+          echo ${LOCAL_IMAGE}
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@7b7aa264d83dc58691451798b4d117d53d21edfe
