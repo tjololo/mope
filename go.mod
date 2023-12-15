@@ -1,6 +1,6 @@
 module github.com/tjololo/mope
 
-go 1.20
+go 1.21
 
 require (
 	github.com/bradleyfalzon/ghinstallation/v2 v2.8.0
