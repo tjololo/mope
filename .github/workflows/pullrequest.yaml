@@ -13,13 +13,12 @@ on:
       - go.sum
       - pkg/**
       - .github/workflows/main.yaml
+      - .github/workflows/pullrequest.yaml
 
 jobs:
   test:
     name: go test
     runs-on: ubuntu-latest
-    permissions:
-      packages: write
     steps:
 
       - name: Set up Go 1.x
