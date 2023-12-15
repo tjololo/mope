@@ -95,7 +95,7 @@ jobs:
           service_account: ${{ secrets.GCP_RUN_SERVICE_ACCOUNT }}
           access_token_lifetime: 300s
       - name: Deploy release to cloud run
-        uses: google-github-actions/deploy-cloudrun@v1
+        uses: google-github-actions/deploy-cloudrun@v2
         with:
           service: mope
           region: europe-north1
