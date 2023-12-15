@@ -42,7 +42,7 @@ jobs:
       - name: Build docker image
         id: image-build
         run: |
-          IMAGE = $(./ko build -L .)
+          IMAGE=$(./ko build -L .)
           echo "$IMAGE"
           echo "$IMAGE"
           echo "IMAGE_LOCAL=$IMAGE" >> "$GITHUB_OUTPUT"
