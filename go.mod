@@ -8,7 +8,7 @@ require (
 	github.com/google/go-github/v56 v56.0.0
 	github.com/shurcooL/githubv4 v0.0.0-20231126234147-1cffa1f02456
 	go.uber.org/zap v1.27.0
-	golang.org/x/exp v0.0.0-20240112132812-db7319d0e0e3
+	golang.org/x/exp v0.0.0-20240318143956-a85f2c67cd81
 	gopkg.in/yaml.v3 v3.0.1
 )
 
