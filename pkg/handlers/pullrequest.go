@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"context"
-	"github.com/google/go-github/v56/github"
+	"github.com/google/go-github/v60/github"
 	mopegithub "github.com/tjololo/mope/pkg/github"
 	"github.com/tjololo/mope/pkg/utils"
 	"go.uber.org/zap"

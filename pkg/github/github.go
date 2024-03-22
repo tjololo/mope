@@ -3,7 +3,7 @@ package github
 import (
 	"context"
 	"github.com/bradleyfalzon/ghinstallation/v2"
-	"github.com/google/go-github/v56/github"
+	"github.com/google/go-github/v60/github"
 	"github.com/shurcooL/githubv4"
 	"github.com/tjololo/mope/pkg/structs"
 	"github.com/tjololo/mope/pkg/utils"
