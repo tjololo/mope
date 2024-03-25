@@ -4,7 +4,7 @@ go 1.22.1
 
 require (
 	github.com/bradleyfalzon/ghinstallation/v2 v2.10.0
-	github.com/cbrgm/githubevents v1.13.1
+	github.com/cbrgm/githubevents v1.13.2
 	github.com/google/go-github/v60 v60.0.0
 	github.com/shurcooL/githubv4 v0.0.0-20240120211514-18a1ae0e79dc
 	go.uber.org/zap v1.27.0
