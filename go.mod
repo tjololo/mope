@@ -6,7 +6,7 @@ require (
 	github.com/bradleyfalzon/ghinstallation/v2 v2.10.0
 	github.com/cbrgm/githubevents v1.13.2
 	github.com/google/go-github/v60 v60.0.0
-	github.com/shurcooL/githubv4 v0.0.0-20240120211514-18a1ae0e79dc
+	github.com/shurcooL/githubv4 v0.0.0-20240429030203-be2daab69064
 	go.uber.org/zap v1.27.0
 	golang.org/x/exp v0.0.0-20240325151524-a685a6edb6d8
 	gopkg.in/yaml.v3 v3.0.1
