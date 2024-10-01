@@ -3,7 +3,7 @@
   "extends": [
     "config:base"
   ],
-  "rebaseWhen": "conflict",
+  "rebaseWhen": "conflicted",
   "postUpdateOptions": [
     "gomodTidy"
   ]
