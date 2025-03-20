@@ -10,7 +10,6 @@
   "packageRules": [
     {
       "matchManagers": [
-        "docker",
         "dockerfile",
         "github-actions"
       ],
