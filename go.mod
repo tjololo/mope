@@ -3,7 +3,7 @@ module github.com/tjololo/mope
 go 1.22.2
 
 require (
-	github.com/bradleyfalzon/ghinstallation/v2 v2.10.0
+	github.com/bradleyfalzon/ghinstallation/v2 v2.16.0
 	github.com/cbrgm/githubevents v1.13.2
 	github.com/google/go-github/v60 v60.0.0
 	github.com/shurcooL/githubv4 v0.0.0-20240727222349-48295856cce7
