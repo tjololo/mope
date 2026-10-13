@@ -1,6 +1,6 @@
 module github.com/tjololo/mope
 
-go 1.22.2
+go 1.23.0
 
 require (
 	github.com/bradleyfalzon/ghinstallation/v2 v2.10.0
@@ -17,6 +17,6 @@ require (
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/shurcooL/graphql v0.0.0-20230722043721-ed46e5a46466 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
-	golang.org/x/oauth2 v0.15.0 // indirect
+	golang.org/x/oauth2 v0.27.0 // indirect
 	golang.org/x/sync v0.10.0 // indirect
 )
